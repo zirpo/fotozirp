@@ -1,64 +1,147 @@
 ---
 import { getCollection } from 'astro:content';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
-// Fetch all the AI-generated markdown files
 const allPosts = await getCollection('posts');
-
-// Sort them by date (newest first)
 const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zirpography - Portfolio</title>
-    <style>
-        body { 
-            font-family: system-ui, -apple-system, sans-serif; 
-            background: #111; /* Dark mode background */
-            color: #eee; 
-            margin: 0; 
-            padding: 2rem; 
-        }
-        main { max-width: 900px; margin: 0 auto; }
-        h1 { text-align: center; margin-bottom: 4rem; font-weight: 300; letter-spacing: 2px; }
-        
-        .post { margin-bottom: 6rem; text-align: center; }
-        .post img { 
-            max-width: 100%; 
-            height: auto; 
-            border-radius: 4px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .post h2 { margin: 1.5rem 0 0.5rem; font-weight: 400; font-size: 1.5rem; }
-        
-        .metadata { 
-            color: #888; 
-            font-size: 0.9rem; 
-            display: flex; 
-            justify-content: center; 
-            gap: 1.5rem; 
-            flex-wrap: wrap; 
-        }
-    </style>
+  <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 </head>
-<body>
-    <main>
-        <h1>ZIRPOGRAPHY</h1>
-        
-        {sortedPosts.map(post => (
-            <article class="post">
-                <img src={post.data.image} alt={post.data.title} loading="lazy" />
-                <h2>{post.data.title}</h2>
-                <div class="metadata">
-                    <span>📷 {post.data.camera}</span>
-                    <span>🔭 {post.data.lens}</span>
-                    <span>⚙️ {post.data.aperture} | {post.data.shutter} | ISO {post.data.iso}</span>
-                </div>
-            </article>
-        ))}
-    </main>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+  <Header />
+
+  <main class="flex-grow pt-32 pb-24 px-8 md:px-16 max-w-[1400px] mx-auto w-full">
+    <!-- Hero Header -->
+    <header class="mb-16 md:mb-24">
+      <h1 class="text-4xl md:text-5xl font-headline font-light tracking-tighter text-on-surface leading-[0.9] italic text-center">
+        {SITE_TITLE}
+      </h1>
+    </header>
+
+    <!-- Gallery (Masonry) — no titles, click opens lightbox -->
+    <div class="masonry">
+      {sortedPosts.map((post, index) => (
+        <article class="group cursor-pointer mb-8 break-inside-avoid lightbox-trigger" data-index={index}>
+          <div class="relative overflow-hidden bg-surface-container-low">
+            <img
+              src={post.data.image}
+              alt={post.data.title}
+              loading="lazy"
+              class="w-full object-cover grayscale transition-transform duration-700 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Philosophy Quote -->
+    <section class="mt-48 py-32 bg-surface-container-low px-12 text-center">
+      <span class="font-label text-[10px] uppercase tracking-[0.4em] text-outline mb-12 block">The Philosophy</span>
+      <blockquote class="text-3xl md:text-5xl font-headline italic font-light max-w-4xl mx-auto leading-tight text-on-surface border-none p-0">
+        "Photography is not about documenting reality, but about curating the silence within it."
+      </blockquote>
+    </section>
+  </main>
+
+  <Footer />
+
+  <!-- Lightbox Overlay -->
+  <div id="lightbox" class="fixed inset-0 z-[100] bg-surface hidden flex-col" role="dialog" aria-modal="true">
+    <!-- Top bar: close + title -->
+    <div class="flex items-center justify-between px-8 md:px-16 py-6">
+      <button id="lb-close" class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer bg-transparent border-none" aria-label="Close">
+        &larr; Back
+      </button>
+      <span id="lb-title" class="font-headline text-lg font-light text-on-surface"></span>
+      <span id="lb-counter" class="font-label text-[10px] uppercase tracking-[0.2em] text-outline"></span>
+    </div>
+
+    <!-- Image + nav arrows -->
+    <div class="flex-grow flex items-center justify-center relative px-4 md:px-20 pb-4 min-h-0">
+      <!-- Prev -->
+      <button id="lb-prev" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer bg-transparent border-none z-10" aria-label="Previous">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <img id="lb-image" src="" alt="" class="max-h-full max-w-full object-contain" />
+
+      <!-- Next -->
+      <button id="lb-next" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer bg-transparent border-none z-10" aria-label="Next">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Bottom: metadata -->
+    <div id="lb-meta" class="px-8 md:px-16 py-6 font-label text-xs text-on-surface-variant flex gap-6 flex-wrap justify-center"></div>
+  </div>
+
+  <!-- Lightbox Script -->
+  <script is:inline define:vars={{ posts: sortedPosts.map(p => ({ title: p.data.title, image: p.data.image, camera: p.data.camera || '', lens: p.data.lens || '', aperture: p.data.aperture || '', shutter: p.data.shutter || '', iso: p.data.iso || '' })) }}>
+    let currentIndex = 0;
+    const lb = document.getElementById('lightbox');
+
+    function openLightbox(index) {
+      currentIndex = parseInt(index);
+      updateLightbox();
+      lb.classList.remove('hidden');
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lb.classList.add('hidden');
+      lb.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function navigateLightbox(dir) {
+      currentIndex = (currentIndex + dir + posts.length) % posts.length;
+      updateLightbox();
+    }
+
+    function updateLightbox() {
+      const post = posts[currentIndex];
+      document.getElementById('lb-image').src = post.image;
+      document.getElementById('lb-image').alt = post.title;
+      document.getElementById('lb-title').textContent = post.title;
+      document.getElementById('lb-counter').textContent = `${currentIndex + 1} / ${posts.length}`;
+
+      // Build metadata
+      const parts = [];
+      if (post.camera) parts.push(post.camera);
+      if (post.lens) parts.push(post.lens);
+      const settings = [post.aperture, post.shutter, post.iso ? `ISO ${post.iso}` : ''].filter(Boolean);
+      if (settings.length) parts.push(settings.join(' · '));
+      document.getElementById('lb-meta').innerHTML = parts.map(p => `<span>${p}</span>`).join('');
+    }
+
+    // Click handlers
+    document.querySelectorAll('.lightbox-trigger').forEach(el => {
+      el.addEventListener('click', () => openLightbox(el.dataset.index));
+    });
+    document.getElementById('lb-close').addEventListener('click', closeLightbox);
+    document.getElementById('lb-prev').addEventListener('click', () => navigateLightbox(-1));
+    document.getElementById('lb-next').addEventListener('click', () => navigateLightbox(1));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (lb.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigateLightbox(-1);
+      if (e.key === 'ArrowRight') navigateLightbox(1);
+    });
+  </script>
 </body>
 </html>
