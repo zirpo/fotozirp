@@ -1,0 +1,61 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <BaseHead title={`Impressum — ${SITE_TITLE}`} description="Impressum gemäß § 5 DDG" />
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+  <Header />
+
+  <main class="flex-grow pt-32 pb-24 px-8 md:px-16 max-w-[800px] mx-auto w-full">
+    <h1 class="text-3xl font-headline font-light mb-12">Impressum</h1>
+
+    <article class="font-body text-base text-on-surface-variant leading-relaxed space-y-8 max-w-2xl">
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Angaben gemäß § 5 DDG</h2>
+        <p>
+          Daniel Zirpoli<br />
+          Grünstr. 61<br />
+          40723 Hilden
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Kontakt</h2>
+        <p>
+          E-Mail: zirpozett@googlemail.com
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Haftung für Inhalte</h2>
+        <p>
+          Als Diensteanbieter bin ich gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG bin ich als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Haftung für Links</h2>
+        <p>
+          Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Urheberrecht</h2>
+        <p>
+          Die auf dieser Website veröffentlichten Fotografien und Inhalte unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen meiner schriftlichen Zustimmung.
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <Footer />
+</body>
+</html>

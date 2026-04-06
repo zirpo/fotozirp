@@ -1,0 +1,65 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <BaseHead title={`Datenschutz — ${SITE_TITLE}`} description="Datenschutzerklärung" />
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+  <Header />
+
+  <main class="flex-grow pt-32 pb-24 px-8 md:px-16 max-w-[800px] mx-auto w-full">
+    <h1 class="text-3xl font-headline font-light mb-12">Datenschutzerklärung</h1>
+
+    <article class="font-body text-base text-on-surface-variant leading-relaxed space-y-8 max-w-2xl">
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Verantwortlicher</h2>
+        <p>
+          Daniel Zirpoli<br />
+          Grünstr. 61<br />
+          40723 Hilden<br />
+          E-Mail: zirpozett@googlemail.com
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Allgemeines zur Datenverarbeitung</h2>
+        <p>
+          Diese Website ist eine private, nicht-kommerzielle Fotografie-Seite. Ich erhebe so wenig personenbezogene Daten wie möglich. Es gibt keine Benutzerkonten, Kommentarfunktionen, Analysetools oder Werbenetzwerke.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Hosting</h2>
+        <p>
+          Diese Website wird als statische Seite gehostet. Beim Abruf der Seite werden durch den Hosting-Anbieter automatisch Informationen in Server-Logfiles gespeichert, die Ihr Browser übermittelt. Dazu gehören: IP-Adresse, Browsertyp, Betriebssystem, Referrer-URL, Uhrzeit der Serveranfrage. Diese Daten werden nicht mit anderen Datenquellen zusammengeführt.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Externe Ressourcen</h2>
+        <p>
+          <strong>Google Fonts:</strong> Diese Seite nutzt Schriftarten von Google Fonts, die über Google-Server geladen werden. Dabei wird Ihre IP-Adresse an Google übermittelt. Weitere Informationen finden Sie in der <a href="https://policies.google.com/privacy" class="underline underline-offset-4 decoration-outline-variant hover:text-on-surface transition-colors">Datenschutzerklärung von Google</a>.
+        </p>
+        <p>
+          <strong>Cloudflare R2:</strong> Bilder werden über Cloudflare R2 bereitgestellt. Dabei kann Ihre IP-Adresse an Cloudflare übermittelt werden. Weitere Informationen finden Sie in der <a href="https://www.cloudflare.com/privacypolicy/" class="underline underline-offset-4 decoration-outline-variant hover:text-on-surface transition-colors">Datenschutzerklärung von Cloudflare</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-label text-[10px] uppercase tracking-[0.3em] text-outline mb-4">Ihre Rechte</h2>
+        <p>
+          Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer personenbezogenen Daten. Sie haben zudem das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Für Anfragen wenden Sie sich bitte an die oben genannte E-Mail-Adresse.
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <Footer />
+</body>
+</html>
