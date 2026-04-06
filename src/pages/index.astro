@@ -7,6 +7,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 const allPosts = await getCollection('posts');
 const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+// Note: client-side JS shuffles the DOM order on each page load
 ---
 
 <!DOCTYPE html>
@@ -126,6 +127,30 @@ const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.
       if (settings.length) parts.push(settings.join(' · '));
       document.getElementById('lb-meta').innerHTML = parts.map(p => `<span>${p}</span>`).join('');
     }
+
+    // Shuffle gallery on each page load
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const gallery = document.querySelector('.masonry');
+    const items = Array.from(gallery.children);
+    const order = shuffle(items.map((_, i) => i));
+
+    // Reorder DOM and posts array together
+    const shuffledPosts = order.map(i => posts[i]);
+    posts.length = 0;
+    shuffledPosts.forEach(p => posts.push(p));
+    order.forEach(i => gallery.appendChild(items[i]));
+
+    // Re-index after shuffle
+    gallery.querySelectorAll('.lightbox-trigger').forEach((el, i) => {
+      el.dataset.index = i;
+    });
 
     // Click handlers
     document.querySelectorAll('.lightbox-trigger').forEach(el => {
